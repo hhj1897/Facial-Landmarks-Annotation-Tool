@@ -460,7 +460,13 @@ void ft::MainWindow::on_tabCloseRequested(int iTabIndex)
 		ui->textFileName->setText("");
 		ui->zoomSlider->blockSignals(true);
 		ui->zoomSlider->setValue((ui->zoomSlider->maximum() - ui->zoomSlider->minimum()) / 2 + 1);
-		ui->zoomSlider->blockSignals(false);
+		ui->sizeSlider->blockSignals(false);
+		ui->sizeSlider->blockSignals(true);
+		ui->sizeSlider->setValue(5);
+		ui->sizeSlider->blockSignals(false);
+		ui->widthSlider->blockSignals(true);
+		ui->widthSlider->setValue(1);
+		ui->widthSlider->blockSignals(false);
 	}
 }
 
@@ -655,17 +661,27 @@ void ft::MainWindow::toggleImageListView()
 }
 
 // +-----------------------------------------------------------
-void ft::MainWindow::onChildUIUpdated(const QString sImageName, const int iZoomLevel)
+void ft::MainWindow::onChildUIUpdated(const QString sImageName, const int iZoomLevel, const int iPointSize, const int iLineWidth)
 {
 	// Image file name
 	ui->textFileName->setText(sImageName);
 	ui->textFileName->moveCursor(QTextCursor::End);
 	ui->textFileName->ensureCursorVisible();
-			
+	
 	// Zoom level
 	ui->zoomSlider->blockSignals(true);
 	ui->zoomSlider->setValue(iZoomLevel);
 	ui->zoomSlider->blockSignals(false);
+
+	// Point size
+	ui->sizeSlider->blockSignals(true);
+	ui->sizeSlider->setValue(iPointSize);
+	ui->sizeSlider->blockSignals(false);
+
+	// Line width
+	ui->widthSlider->blockSignals(true);
+	ui->widthSlider->setValue(iLineWidth);
+	ui->widthSlider->blockSignals(false);
 
 	updateUI();
 }
@@ -806,7 +822,8 @@ ft::ChildWindow* ft::MainWindow::createChildWindow(QString sFileName, bool bModi
 	pChild->setWindowModified(bModified);
 
 	// Connect to its signals
-	connect(pChild, SIGNAL(onUIUpdated(const QString, const int)), this, SLOT(onChildUIUpdated(const QString, const int)));
+	connect(pChild, SIGNAL(onUIUpdated(const QString, const int, const int, const int)), this, 
+		SLOT(onChildUIUpdated(const QString, const int const int, const int)));
 	connect(pChild, SIGNAL(onDataModified()), this, SLOT(onUpdateUI()));
 	connect(pChild, SIGNAL(onFeaturesSelectionChanged()), this, SLOT(onUpdateUI()));
 
@@ -831,7 +848,8 @@ void ft::MainWindow::destroyChildWindow(ChildWindow *pChild)
 	int iTabIndex = ui->tabWidget->indexOf(pChild);
 	ui->tabWidget->removeTab(iTabIndex);
 
-	disconnect(pChild, SIGNAL(onUIUpdated(const QString, const int)), this, SLOT(onChildUIUpdated(const QString, const int)));
+	disconnect(pChild, SIGNAL(onUIUpdated(const QString, const int, const int, const int)), this, 
+		SLOT(onChildUIUpdated(const QString, const int, const int, const int)));
 	disconnect(pChild, SIGNAL(onDataModified()), this, SLOT(onUpdateUI()));
 	disconnect(pChild, SIGNAL(onFeaturesSelectionChanged()), this, SLOT(onUpdateUI()));
 

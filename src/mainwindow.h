@@ -253,8 +253,10 @@ namespace ft
 		 * Slot to capture indications of update in the UI due to changes in the child window selection model.
 		 * @param sImageName QString with the name of the current selected face image.
 		 * @param iZoomLevel Current level of zoom in the face image displayed.
+		 * @param iPointSize Current point size in the face image displayed.
+		 * @param iLineWidth Current line width in the face image displayed.
 		 */
-		void onChildUIUpdated(const QString sImageName, const int iZoomLevel);
+		void onChildUIUpdated(const QString sImageName, const int iZoomLevel, const int iPointSize, const int iLineWidth);
 
 		/**
 		 * Captures the updates in the zoom slider by user interaction.
