@@ -27,7 +27,7 @@
 #include <QPainter>
 
 // Radius of the drawn node, in pixels
-const int ft::FaceFeatureNode::RADIUS = 4;
+int ft::FaceFeatureNode::RADIUS = 5;
 
 // +-----------------------------------------------------------
 ft::FaceFeatureNode::FaceFeatureNode(int iID, FaceWidget *pFaceWidget)

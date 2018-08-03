@@ -135,12 +135,15 @@ void ft::FaceWidget::wheelEvent(QWheelEvent *pEvent)
 	double dBase = iDelta < 0 ? ZOOM_OUT_STEP : ZOOM_IN_STEP;
 	int iSteps = abs(iDelta / 120);
 
-	if(!(bCtrl || bAlt || bShift)) // No special key pressed => scroll vertically
+	if (!(bCtrl || bAlt || bShift)) // No special key pressed => scroll vertically
 		verticalScrollBar()->setValue(verticalScrollBar()->value() - iDelta);
-	else if(bShift && !(bCtrl || bAlt)) // Only shift key pressed => scroll horizontally
+	else if (bShift && !(bCtrl || bAlt)) // Only shift key pressed => scroll horizontally
 		horizontalScrollBar()->setValue(horizontalScrollBar()->value() - iDelta);
-	else if(bCtrl && !(bAlt || bShift)) // Only ctrl key pressed => zoom in and out
+	else if (bCtrl && !(bAlt || bShift)) // Only ctrl key pressed => zoom in and out
 		scaleViewBy(qPow(dBase, iSteps));
+	else if (bCtrl && bShift && !bAlt) // Ctrl and shift keys are pressed => change point size
+		// hhj: TODO
+		;
 }
 #endif
 
@@ -211,6 +214,39 @@ void ft::FaceWidget::zoomIn()
 void ft::FaceWidget::zoomOut()
 {
 	scaleViewBy(ZOOM_OUT_STEP);
+}
+
+// +-----------------------------------------------------------
+void ft::FaceWidget::setPointSize(const int iPointSize)
+{
+	FaceFeatureNode::RADIUS = iPointSize > 1 ? (iPointSize < 48 ? iPointSize : 48) : 1;
+	emit onPointSizeChanged(getPointSize());
+	update();
+}
+
+// +-----------------------------------------------------------
+int ft::FaceWidget::getPointSize() const
+{
+	return FaceFeatureNode::RADIUS;
+}
+
+// +-----------------------------------------------------------
+void ft::FaceWidget::changePointSize(int iDelta)
+{
+	setPointSize(getPointSize() + iDelta);
+}
+
+// +-----------------------------------------------------------
+void ft::FaceWidget::setLineWidth(const int iLineWidth)
+{
+	// hhj: TODO
+}
+
+// +-----------------------------------------------------------
+int ft::FaceWidget::getLineWidth() const
+{
+	// hhj: TODO
+	return 1;
 }
 
 // +-----------------------------------------------------------

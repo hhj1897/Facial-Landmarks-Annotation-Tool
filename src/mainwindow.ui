@@ -315,7 +315,7 @@
             </font>
            </property>
            <property name="toolTip">
-            <string>Change image size (Ctrl + Mouse Wheel)</string>
+            <string>Change image size (+ / - or Ctrl + Mouse Wheel)</string>
            </property>
            <property name="minimum">
             <number>1</number>
@@ -473,13 +473,13 @@
             </font>
            </property>
            <property name="toolTip">
-            <string>Change point size (+ / -)</string>
+            <string>Change point size (&gt; / &lt; or Ctrl + Shift + Mouse Wheel)</string>
            </property>
            <property name="minimum">
             <number>1</number>
            </property>
            <property name="maximum">
-            <number>32</number>
+            <number>48</number>
            </property>
            <property name="singleStep">
             <number>1</number>
@@ -556,7 +556,7 @@
               </size>
              </property>
              <property name="text">
-              <string>32</string>
+              <string>48</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -596,13 +596,13 @@
             </font>
            </property>
            <property name="toolTip">
-            <string>Change line width (&gt; / &lt;)</string>
+            <string>Change line width</string>
            </property>
            <property name="minimum">
             <number>1</number>
            </property>
            <property name="maximum">
-            <number>16</number>
+            <number>24</number>
            </property>
            <property name="singleStep">
             <number>1</number>
@@ -679,7 +679,7 @@
               </size>
              </property>
              <property name="text">
-              <string>16</string>
+              <string>24</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

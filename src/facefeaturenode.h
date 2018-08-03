@@ -87,7 +87,7 @@ namespace ft
 	public:
 
 		/** Constant with the radius of the node drawn, in pixels. */
-		const static int RADIUS;
+		static int RADIUS;
 
 	protected:
 

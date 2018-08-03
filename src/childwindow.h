@@ -107,6 +107,13 @@ namespace ft
 		 */
 		void zoomOut();
 
+		// The stuff about point size and line width
+		void setPointSize(const int iPointSize);
+		int getPointSize() const;
+		void changePointSize(int iDelta);
+		void setLineWidth(const int iLineWidth);
+		int getLineWidth() const;
+
 		/**
 		 * Indicates if the face feature nodes are on display.
 		 * @return Boolean indicating if the face feature nodes are being displayed or not.
@@ -220,6 +227,10 @@ namespace ft
 		 */
 		void onScaleFactorChanged(const double dScaleFactor);
 
+		// Stuff related to point size and line width
+		void onPointSizeChanged(const int iPointSize);
+		void onLineWidthChanged(const int iLineWidth);
+
 		/**
 		 * Captures the indication that face features were selected or unselected in the editor.
 		 */
@@ -255,8 +266,10 @@ namespace ft
 		 * Signal to indicate an update in the UI due to changes in the selection model.
 		 * @param sImageName QString with the name of the current selected face image.
 		 * @param iZoomLevel Current level of zoom in the face image widget.
+		 * @param iPointSize Current point size in the face image widget.
+		 * @param iLineWidth Current line width in the face image widget.
 		 */
-		void onUIUpdated(const QString sImageName, const int iZoomLevel);
+		void onUIUpdated(const QString sImageName, const int iZoomLevel, const int iPointSize, const int iLineWidth);
 
 	private:
 

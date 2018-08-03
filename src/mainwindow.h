@@ -262,13 +262,19 @@ namespace ft
 		 * Captures the updates in the zoom slider by user interaction.
 		 * @param iValue Integer with the new value of the slider (in the range [1, 21]).
 		 */
-		void onSliderValueChanged(int iValue);
+		void onZoomSliderValueChanged(int iValue);
 
 		/**
-		 * Captures the updates in the zoom by user interaction in other sources that not the slider.
-		 * @param iValue Integer with the new value of the zoom (in the range [1, 21]).
-		 */
-		void onZoomLevelChanged(int iValue);
+		* Captures the updates in the size slider by user interaction.
+		* @param iValue Integer with the new value of the slider (in the range [1, 48]).
+		*/
+		void onSizeSliderValueChanged(int iValue);
+
+		/**
+		* Captures the updates in the width slider by user interaction.
+		* @param iValue Integer with the new value of the slider (in the range [1, 24]).
+		*/
+		void onWidthSliderValueChanged(int iValue);
 
 		/**
 		 * Captures indications that the UI needs to be updated due to changes in the data model

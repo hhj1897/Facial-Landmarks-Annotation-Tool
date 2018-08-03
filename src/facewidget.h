@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Luiz Carlos Vieira (http://www.luiz.vieira.nom.br)
+ * Copyright (C) 202416 Luiz Carlos Vieira (http://www.luiz.vieira.nom.br)
  *
  * This file is part of FLAT.
  *
@@ -88,6 +88,13 @@ namespace ft
 		 * Performs one step of zoom out.
 		 */
 		void zoomOut();
+
+		// The stuff about point size and line width
+		void setPointSize(const int iPointSize);
+		int getPointSize() const;
+		void changePointSize(int iDelta);
+		void setLineWidth(const int iLineWidth);
+		int getLineWidth() const;
 
 		/**
 		 * Queries the list of existing face feature nodes. Optionally, guarantee that the
@@ -220,6 +227,10 @@ namespace ft
 		 * @param dScaleFactor Double with the new scale factor.
 		 */
 		void onScaleFactorChanged(const double dScaleFactor);
+
+		// Stuff related to point size and line width
+		void onPointSizeChanged(const int iPointSize);
+		void onLineWidthChanged(const int iLineWidth);
 
 		/**
 		 * Signal to indicate that the face features changed somehow: a face feature node was added, removed or moved

@@ -53,6 +53,8 @@ ft::ChildWindow::ChildWindow(QWidget *pParent) :
 
 	// Capture of relevant signals
 	connect(m_pFaceWidget, SIGNAL(onScaleFactorChanged(const double)), this, SLOT(onScaleFactorChanged(const double)));
+	connect(m_pFaceWidget, SIGNAL(onPointSizeChanged(const int)), this, SLOT(onPointSizeChanged(const int)));
+	connect(m_pFaceWidget, SIGNAL(onLineWidthChanged(const int)), this, SLOT(onLineWidthChanged(const int)));
 	connect(m_pFaceWidget, SIGNAL(onFaceFeaturesSelectionChanged()), this, SLOT(onFaceFeaturesSelectionChanged()));
 	connect(m_pFaceWidget, SIGNAL(onFaceFeaturesChanged()), this, SLOT(onDataChanged()));
 	connect(m_pFaceDatasetModel, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QVector<int>&)), this, SLOT(onDataChanged()));
@@ -153,13 +155,63 @@ void ft::ChildWindow::zoomOut()
 }
 
 // +-----------------------------------------------------------
+void ft::ChildWindow::setPointSize(const int iPointSize)
+{
+	m_pFaceWidget->setPointSize(iPointSize);
+}
+
+// +-----------------------------------------------------------
+int ft::ChildWindow::getPointSize() const
+{
+	return m_pFaceWidget->getPointSize();
+}
+
+// +-----------------------------------------------------------
+void ft::ChildWindow::changePointSize(int iDelta)
+{
+	m_pFaceWidget->changePointSize(iDelta);
+}
+
+// +-----------------------------------------------------------
+void ft::ChildWindow::setLineWidth(const int iLineWidth)
+{
+	m_pFaceWidget->setLineWidth(iLineWidth);
+}
+
+// +-----------------------------------------------------------
+int ft::ChildWindow::getLineWidth() const
+{
+	return m_pFaceWidget->getLineWidth();
+}
+
+// +-----------------------------------------------------------
 void ft::ChildWindow::onScaleFactorChanged(const double dScaleFactor)
 {
 	Q_UNUSED(dScaleFactor);
 
 	QModelIndex oCurrent = m_pFaceSelectionModel->currentIndex();
 	QString sImageName = m_pFaceDatasetModel->data(m_pFaceDatasetModel->index(oCurrent.row(), 0), Qt::UserRole).toString();
-	emit onUIUpdated(sImageName, getZoomLevel());
+	emit onUIUpdated(sImageName, getZoomLevel(), getPointSize(), getLineWidth());
+}
+
+// +-----------------------------------------------------------
+void ft::ChildWindow::onPointSizeChanged(const int iPointSize)
+{
+	Q_UNUSED(iPointSize);
+
+	QModelIndex oCurrent = m_pFaceSelectionModel->currentIndex();
+	QString sImageName = m_pFaceDatasetModel->data(m_pFaceDatasetModel->index(oCurrent.row(), 0), Qt::UserRole).toString();
+	emit onUIUpdated(sImageName, getZoomLevel(), getPointSize(), getLineWidth());
+}
+
+// +-----------------------------------------------------------
+void ft::ChildWindow::onLineWidthChanged(const int iLineWidth)
+{
+	Q_UNUSED(iLineWidth);
+
+	QModelIndex oCurrent = m_pFaceSelectionModel->currentIndex();
+	QString sImageName = m_pFaceDatasetModel->data(m_pFaceDatasetModel->index(oCurrent.row(), 0), Qt::UserRole).toString();
+	emit onUIUpdated(sImageName, getZoomLevel(), getPointSize(), getLineWidth());
 }
 
 // +-----------------------------------------------------------
@@ -180,7 +232,7 @@ void ft::ChildWindow::onCurrentChanged(const QModelIndex &oCurrent, const QModel
 	{
 		m_iCurrentImage = -1;
 		m_pFaceWidget->setPixmap(QPixmap(":/images/noface"));
-		emit onUIUpdated("", 0);
+		emit onUIUpdated("", 0, 0, 0);
 	}
 	else
 	{
@@ -192,7 +244,7 @@ void ft::ChildWindow::onCurrentChanged(const QModelIndex &oCurrent, const QModel
 			m_pFaceWidget->setPixmap(QPixmap(":/images/brokenimage"));
 
 		QString sImageName = oCurrent.data(Qt::UserRole).toString();
-		emit onUIUpdated(sImageName, getZoomLevel());
+		emit onUIUpdated(sImageName, getZoomLevel(), getPointSize(), getLineWidth());
 
 		refreshFeaturesInWidget();
 	}

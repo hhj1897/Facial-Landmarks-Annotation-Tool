@@ -102,8 +102,10 @@ ft::MainWindow::MainWindow(QWidget *pParent) :
 			pAction->setToolTip(QString("%1 (%2)").arg(pAction->toolTip()).arg(pAction->shortcut().toString()));
 	}
 
-	// Connect the zoom slider
-	connect(ui->zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(onSliderValueChanged(int)));
+	// Connect the sliders
+	connect(ui->zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(onZoomSliderValueChanged(int)));
+	connect(ui->sizeSlider, SIGNAL(valueChanged(int)), this, SLOT(onSizeSliderValueChanged(int)));
+	connect(ui->widthSlider, SIGNAL(valueChanged(int)), this, SLOT(onWidthSliderValueChanged(int)));
 }
 
 // +-----------------------------------------------------------
@@ -736,6 +738,8 @@ void ft::MainWindow::updateUI()
 	ui->actionExportPointsFile->setEnabled(bItemsSelected);
 	m_pViewButton->setEnabled(bFileOpened);
 	ui->zoomSlider->setEnabled(bFileOpened);
+	ui->sizeSlider->setEnabled(bFileOpened);
+	ui->widthSlider->setEnabled(bFileOpened);
 
 	// Update the tab title and tooltip
 	if(bFileOpened)
@@ -757,7 +761,7 @@ void ft::MainWindow::updateUI()
 }
 
 // +-----------------------------------------------------------
-void ft::MainWindow::onSliderValueChanged(int iValue)
+void ft::MainWindow::onZoomSliderValueChanged(int iValue)
 {
 	ChildWindow *pChild = (ChildWindow*) ui->tabWidget->currentWidget();
 	if(pChild)
@@ -765,11 +769,19 @@ void ft::MainWindow::onSliderValueChanged(int iValue)
 }
 
 // +-----------------------------------------------------------
-void ft::MainWindow::onZoomLevelChanged(int iValue)
+void ft::MainWindow::onSizeSliderValueChanged(int iValue)
 {
-	ui->zoomSlider->blockSignals(true);
-	ui->zoomSlider->setValue(iValue);
-	ui->zoomSlider->blockSignals(false);
+	ChildWindow *pChild = (ChildWindow*)ui->tabWidget->currentWidget();
+	if (pChild)
+		pChild->setPointSize(iValue);
+}
+
+// +-----------------------------------------------------------
+void ft::MainWindow::onWidthSliderValueChanged(int iValue)
+{
+	ChildWindow *pChild = (ChildWindow*)ui->tabWidget->currentWidget();
+	if (pChild)
+		pChild->setLineWidth(iValue);
 }
 
 // +-----------------------------------------------------------
@@ -791,12 +803,26 @@ void ft::MainWindow::keyPressEvent(QKeyEvent *pEvent)
     switch(pEvent->key())
 	{
 		case Qt::Key_Plus:
+		case Qt::Key_Equal:
 			pChild->zoomIn();
 			pEvent->accept();
 			break;
 
 		case Qt::Key_Minus:
+		case Qt::Key_Underscore:
 			pChild->zoomOut();
+			pEvent->accept();
+			break;
+
+		case Qt::Key_Greater:
+		case Qt::Key_Period:
+			pChild->changePointSize(1);
+			pEvent->accept();
+			break;
+
+		case Qt::Key_Less:
+		case Qt::Key_Comma:
+			pChild->changePointSize(-1);
 			pEvent->accept();
 			break;
 
@@ -823,7 +849,7 @@ ft::ChildWindow* ft::MainWindow::createChildWindow(QString sFileName, bool bModi
 
 	// Connect to its signals
 	connect(pChild, SIGNAL(onUIUpdated(const QString, const int, const int, const int)), this, 
-		SLOT(onChildUIUpdated(const QString, const int const int, const int)));
+		SLOT(onChildUIUpdated(const QString, const int, const int, const int)));
 	connect(pChild, SIGNAL(onDataModified()), this, SLOT(onUpdateUI()));
 	connect(pChild, SIGNAL(onFeaturesSelectionChanged()), this, SLOT(onUpdateUI()));
 
