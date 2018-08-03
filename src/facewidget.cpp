@@ -107,6 +107,8 @@ void ft::FaceWidget::setScaleFactor(const double dScaleFactor)
 		m_dScaleFactor = dScaleFactor;
 		if(m_dScaleFactor != 1.0)
 			scale(dScaleFactor, dScaleFactor);
+
+		prepareGeometryChange();
 	}
 }
 
@@ -118,6 +120,7 @@ void ft::FaceWidget::scaleViewBy(double dFactorBy)
 	{
 		m_dScaleFactor = dFactor;
 	    scale(dFactorBy, dFactorBy);
+		prepareGeometryChange();
 
 		// Emit the signal that the scale factor has changed
 		emit onScaleFactorChanged(getScaleFactor());
@@ -142,8 +145,7 @@ void ft::FaceWidget::wheelEvent(QWheelEvent *pEvent)
 	else if (bCtrl && !(bAlt || bShift)) // Only ctrl key pressed => zoom in and out
 		scaleViewBy(qPow(dBase, iSteps));
 	else if (bCtrl && bShift && !bAlt) // Ctrl and shift keys are pressed => change point size
-		// hhj: TODO
-		;
+		changePointSize(iDelta / 120);
 }
 #endif
 
@@ -219,9 +221,11 @@ void ft::FaceWidget::zoomOut()
 // +-----------------------------------------------------------
 void ft::FaceWidget::setPointSize(const int iPointSize)
 {
+	int iOldRadius = FaceFeatureNode::RADIUS;
 	FaceFeatureNode::RADIUS = iPointSize > 1 ? (iPointSize < 48 ? iPointSize : 48) : 1;
+	if (FaceFeatureNode::RADIUS != iOldRadius)
+		prepareGeometryChange();
 	emit onPointSizeChanged(getPointSize());
-	update();
 }
 
 // +-----------------------------------------------------------
@@ -239,14 +243,17 @@ void ft::FaceWidget::changePointSize(int iDelta)
 // +-----------------------------------------------------------
 void ft::FaceWidget::setLineWidth(const int iLineWidth)
 {
-	// hhj: TODO
+	int iOldWidth = FaceFeatureEdge::WIDTH;
+	FaceFeatureEdge::WIDTH = iLineWidth > 1 ? (iLineWidth < 24 ? iLineWidth : 24) : 1;
+	if (FaceFeatureEdge::WIDTH != iOldWidth)
+		prepareGeometryChange();
+	emit onLineWidthChanged(getLineWidth());
 }
 
 // +-----------------------------------------------------------
 int ft::FaceWidget::getLineWidth() const
 {
-	// hhj: TODO
-	return 1;
+	return FaceFeatureEdge::WIDTH;
 }
 
 // +-----------------------------------------------------------
@@ -542,7 +549,10 @@ void ft::FaceWidget::setDisplayFeatureIDs(const bool bValue)
 {
 	m_bDisplayFeatureIDs = bValue;
 	foreach(FaceFeatureNode *pNode, m_lFaceFeatures)
+	{
+		pNode->prepareGeometryChange();
 		pNode->update();
+	}
 	update();
 }
 
@@ -568,4 +578,13 @@ void ft::FaceWidget::contextMenuEvent(QContextMenuEvent *pEvent)
 void ft::FaceWidget::setContextMenu(QMenu *pMenu)
 {
 	m_pContextMenu = pMenu;
+}
+
+// +-----------------------------------------------------------
+void ft::FaceWidget::prepareGeometryChange()
+{
+	for (int i=0; i<m_lFaceFeatures.size(); ++i)
+		m_lFaceFeatures[i]->prepareGeometryChange();
+	for (int i=0; i<m_lConnections.size(); ++i)
+		m_lConnections[i]->prepareGeometryChange();
 }

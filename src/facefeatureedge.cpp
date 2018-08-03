@@ -27,6 +27,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 
+int ft::FaceFeatureEdge::WIDTH = 1;
+
 // +-----------------------------------------------------------
 ft::FaceFeatureEdge::FaceFeatureEdge(FaceWidget *pFaceWidget, FaceFeatureNode *pSourceNode, FaceFeatureNode *pTargetNode)
 {
@@ -61,14 +63,10 @@ void ft::FaceFeatureEdge::adjust()
     if (!m_pSourceNode || !m_pTargetNode)
         return;
 
-    QLineF line(mapFromItem(m_pSourceNode, 0, 0), mapFromItem(m_pTargetNode, 0, 0));
-    qreal length = line.length();
-
     prepareGeometryChange();
 
-    QPointF edgeOffset((line.dx() * FaceFeatureNode::RADIUS) / length, (line.dy() * FaceFeatureNode::RADIUS) / length);
-	m_oSourcePoint = line.p1() + edgeOffset;
-    m_oTargetPoint = line.p2() - edgeOffset;
+	m_oSourcePoint = mapFromItem(m_pSourceNode, 0, 0);
+    m_oTargetPoint = mapFromItem(m_pTargetNode, 0, 0);
 }
 
 // +-----------------------------------------------------------
@@ -77,8 +75,18 @@ QRectF ft::FaceFeatureEdge::boundingRect() const
     if (!m_pSourceNode || !m_pTargetNode)
         return QRectF();
 
+	QLineF line(m_oSourcePoint, m_oTargetPoint);
+    qreal length = line.length();
+
+	QPointF edgeOffset((line.dx() * FaceFeatureNode::RADIUS / m_pFaceWidget->getScaleFactor()) / length, 
+		(line.dy() * FaceFeatureNode::RADIUS / m_pFaceWidget->getScaleFactor()) / length);
+	QPointF oSourcePoint = line.p1() + edgeOffset;
+	QPointF oTargetPoint = line.p2() - edgeOffset;
+
     QRectF oRet = QRectF(m_oSourcePoint, QSizeF(m_oTargetPoint.x() - m_oSourcePoint.x(), m_oTargetPoint.y() - m_oSourcePoint.y()));
-	return oRet.normalized();
+	return oRet.normalized().adjusted(
+		-(WIDTH + 1) / m_pFaceWidget->getScaleFactor() / 2.0, -(WIDTH - 1) / m_pFaceWidget->getScaleFactor() / 2.0, 
+		(WIDTH + 1) / m_pFaceWidget->getScaleFactor() / 2.0, (WIDTH + 1) / m_pFaceWidget->getScaleFactor() / 2.0);
 }
 
 // +-----------------------------------------------------------
@@ -89,7 +97,16 @@ void ft::FaceFeatureEdge::paint(QPainter *pPainter, const QStyleOptionGraphicsIt
     if (!m_pSourceNode || !m_pTargetNode)
         return;
 
-    QLineF oLine(m_oSourcePoint, m_oTargetPoint);
-    pPainter->setPen(QPen(Qt::yellow, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	QLineF line(m_oSourcePoint, m_oTargetPoint);
+    qreal length = line.length();
+
+	QPointF edgeOffset((line.dx() * FaceFeatureNode::RADIUS / m_pFaceWidget->getScaleFactor()) / length, 
+		(line.dy() * FaceFeatureNode::RADIUS / m_pFaceWidget->getScaleFactor()) / length);
+	QPointF oSourcePoint = line.p1() + edgeOffset;
+	QPointF oTargetPoint = line.p2() - edgeOffset;
+
+    QLineF oLine(oSourcePoint, oTargetPoint);
+	pPainter->setPen(QPen(Qt::yellow, WIDTH / m_pFaceWidget->getScaleFactor(), 
+		Qt::SolidLine, Qt::FlatCap, Qt::RoundJoin));
     pPainter->drawLine(oLine);
 }

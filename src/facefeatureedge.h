@@ -58,6 +58,12 @@ namespace ft
 		 */
 		void adjust();
 
+		static int WIDTH;
+		void prepareGeometryChange()
+		{
+			QGraphicsItem::prepareGeometryChange();
+		}
+
 	protected:
 
 		/**

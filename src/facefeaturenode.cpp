@@ -84,12 +84,18 @@ QRectF ft::FaceFeatureNode::boundingRect() const
 	if(m_pFaceWidget->displayFeatureIDs())
 	{
 		QString sID = QString::number(m_iID);
-		int iHeight = m_pFaceWidget->fontMetrics().height();
-		int iWidth = m_pFaceWidget->fontMetrics().width(sID);
-		return QRectF(-(iWidth + RADIUS), -(iHeight + RADIUS), 2 * RADIUS + iWidth, 2 * RADIUS + iHeight);
+		double dHeight = m_pFaceWidget->fontMetrics().height() / 
+			m_pFaceWidget->getScaleFactor() * (RADIUS / 5.0);
+		double dWidth = m_pFaceWidget->fontMetrics().width(sID) / 
+			m_pFaceWidget->getScaleFactor() * (RADIUS / 5.0);
+		return QRectF(-(dWidth + RADIUS / m_pFaceWidget->getScaleFactor()), 
+			-(dHeight + RADIUS / m_pFaceWidget->getScaleFactor()), 
+			2 * RADIUS / m_pFaceWidget->getScaleFactor() + dWidth, 
+			2 * RADIUS / m_pFaceWidget->getScaleFactor() + dHeight);
 	}
 	else
-		return QRectF(-RADIUS, -RADIUS, 2 * RADIUS, 2 * RADIUS);
+		return QRectF(-RADIUS / m_pFaceWidget->getScaleFactor(), -RADIUS / m_pFaceWidget->getScaleFactor(), 
+			2 * RADIUS / m_pFaceWidget->getScaleFactor(), 2 * RADIUS / m_pFaceWidget->getScaleFactor());
 }
 
 // +-----------------------------------------------------------
@@ -117,10 +123,16 @@ void ft::FaceFeatureNode::paint(QPainter *pPainter, const QStyleOptionGraphicsIt
 		QString sID = QString::number(m_iID);
 		int iHeight = m_pFaceWidget->fontMetrics().height();
 		int iWidth = m_pFaceWidget->fontMetrics().width(sID);
-		oBounds = QRectF(-(iWidth + RADIUS), -(iHeight + RADIUS), iWidth, iHeight);
-		pPainter->drawText(oBounds, sID);
+		oBounds = QRectF(-(iWidth + 5.0), -(iHeight + 5.0), iWidth, iHeight);
 
-		oBounds = QRectF(-RADIUS, -RADIUS, 2 * RADIUS, 2 * RADIUS);
+		pPainter->save();
+		pPainter->scale(1.0 / m_pFaceWidget->getScaleFactor() * (RADIUS / 5.0), 
+			1.0 / m_pFaceWidget->getScaleFactor() * (RADIUS / 5.0));
+		pPainter->drawText(oBounds, sID);
+		pPainter->restore();
+
+		oBounds = QRectF(-RADIUS / m_pFaceWidget->getScaleFactor(), -RADIUS / m_pFaceWidget->getScaleFactor(), 
+			2 * RADIUS / m_pFaceWidget->getScaleFactor(), 2 * RADIUS / m_pFaceWidget->getScaleFactor());
 	}
 	else
 		oBounds = boundingRect();

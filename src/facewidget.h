@@ -43,6 +43,8 @@ namespace ft
         Q_OBJECT
 	public:
 
+		void prepareGeometryChange();
+
 		/** Scale value for the zoom in step. */
 		static const double ZOOM_IN_STEP;
 

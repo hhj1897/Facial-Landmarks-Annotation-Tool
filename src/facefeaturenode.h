@@ -88,6 +88,10 @@ namespace ft
 
 		/** Constant with the radius of the node drawn, in pixels. */
 		static int RADIUS;
+		void prepareGeometryChange()
+		{
+			QGraphicsItem::prepareGeometryChange();
+		}
 
 	protected:
 
