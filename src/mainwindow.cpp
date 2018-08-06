@@ -728,13 +728,15 @@ void ft::MainWindow::updateUI()
 	// Update the UI availability
 	ui->actionSave->setEnabled(bFileChanged);
 	ui->actionSaveAs->setEnabled(bFileNotNew);
-	ui->actionAddImage->setEnabled(bFileOpened);
-	ui->actionRemoveImage->setEnabled(bItemsSelected);
-	ui->actionAddFeature->setEnabled(bFileOpened);
-	ui->actionRemoveFeature->setEnabled(bFeaturesSelected);
-	ui->actionConnectFeatures->setEnabled(bFeaturesConnectable);
-	ui->actionDisconnectFeatures->setEnabled(bConnectionsSelected);
-	ui->actionFitLandmarks->setEnabled(bItemsSelected);
+	// hhj: Most actions are disabled to avoid accidents and BUGs.
+	ui->actionNew->setEnabled(false);
+	ui->actionAddImage->setEnabled(false /* bFileOpened */);
+	ui->actionRemoveImage->setEnabled(false /* bItemsSelected */);
+	ui->actionAddFeature->setEnabled(false /* bFileOpened */);
+	ui->actionRemoveFeature->setEnabled(false /* bFeaturesSelected */);
+	ui->actionConnectFeatures->setEnabled(false /* bFeaturesConnectable */);
+	ui->actionDisconnectFeatures->setEnabled(false /* bConnectionsSelected */);
+	ui->actionFitLandmarks->setEnabled(false /* bItemsSelected */);
 	ui->actionExportPointsFile->setEnabled(bItemsSelected);
 	m_pViewButton->setEnabled(bFileOpened);
 	ui->zoomSlider->setEnabled(bFileOpened);
