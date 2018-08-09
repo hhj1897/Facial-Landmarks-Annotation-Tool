@@ -152,6 +152,11 @@ namespace ft
 		void on_actionConfigure_triggered();
 
 		/**
+		 * Slot for the menu Allow Unsafe Action event.
+		 */
+		void on_actionAllowUnsafeActions_toggled();
+
+		/**
 		 * Slot for the menu Fit Landmarks trigger event.
 		 */
 		void on_actionFitLandmarks_triggered();

@@ -312,6 +312,12 @@ void ft::MainWindow::on_actionConfigure_triggered()
 }
 
 // +-----------------------------------------------------------
+void ft::MainWindow::on_actionAllowUnsafeActions_toggled()
+{
+	updateUI();
+}
+
+// +-----------------------------------------------------------
 void ft::MainWindow::on_actionFitLandmarks_triggered()
 {
 	// Only continue if the face-fit utilility is properly configured
@@ -726,17 +732,17 @@ void ft::MainWindow::updateUI()
 	}
 
 	// Update the UI availability
-	ui->actionSave->setEnabled(bFileChanged);
+	ui->actionSave->setEnabled(bFileOpened);
 	ui->actionSaveAs->setEnabled(bFileNotNew);
 	// hhj: Most actions are disabled to avoid accidents and BUGs.
-	ui->actionNew->setEnabled(false);
-	ui->actionAddImage->setEnabled(false /* bFileOpened */);
-	ui->actionRemoveImage->setEnabled(false /* bItemsSelected */);
-	ui->actionAddFeature->setEnabled(false /* bFileOpened */);
-	ui->actionRemoveFeature->setEnabled(false /* bFeaturesSelected */);
-	ui->actionConnectFeatures->setEnabled(false /* bFeaturesConnectable */);
-	ui->actionDisconnectFeatures->setEnabled(false /* bConnectionsSelected */);
-	ui->actionFitLandmarks->setEnabled(false /* bItemsSelected */);
+	ui->actionNew->setEnabled(ui->actionAllowUnsafeActions->isChecked());
+	ui->actionAddImage->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bFileOpened);
+	ui->actionRemoveImage->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bItemsSelected);
+	ui->actionAddFeature->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bFileOpened);
+	ui->actionRemoveFeature->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bFeaturesSelected);
+	ui->actionConnectFeatures->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bFeaturesConnectable);
+	ui->actionDisconnectFeatures->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bConnectionsSelected);
+	ui->actionFitLandmarks->setEnabled(ui->actionAllowUnsafeActions->isChecked() && bItemsSelected);
 	ui->actionExportPointsFile->setEnabled(bItemsSelected);
 	m_pViewButton->setEnabled(bFileOpened);
 	ui->zoomSlider->setEnabled(bFileOpened);

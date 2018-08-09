@@ -163,6 +163,8 @@
     <addaction name="menu_Images"/>
     <addaction name="separator"/>
     <addaction name="menu_Facial_Landmarks"/>
+    <addaction name="separator"/>
+    <addaction name="actionAllowUnsafeActions"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="locale">
@@ -1187,6 +1189,17 @@
    </property>
    <property name="toolTip">
     <string>Exports the annotation in current selected image to a CSIRO Face Analysis SDK points file</string>
+   </property>
+  </action>
+  <action name="actionAllowUnsafeActions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Allow &amp;Unsafe Actions</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable / disable the unsafe actions</string>
    </property>
   </action>
  </widget>
