@@ -435,7 +435,7 @@ void ft::MainWindow::on_actionExportPointsFile_triggered()
 // +-----------------------------------------------------------
 void ft::MainWindow::on_actionProject_triggered()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/luigivieira/Facial-Landmarks-Annotation-Tool.git"));
+	QDesktopServices::openUrl(QUrl("https://github.com/hhj1897/Facial-Landmarks-Annotation-Tool"));
 }
 
 // +-----------------------------------------------------------
