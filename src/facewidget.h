@@ -77,7 +77,7 @@ namespace ft
 		/**
 		 * Sets the scale factor of the image displayed.
 		 * @param dScaleFactor Double with the new scale factor to be applied. It must be 
-		 * in the interval [0.10, 10.0].
+		 * in the interval [0.01, 100.0].
 		 */
 		void setScaleFactor(const double dScaleFactor);
 

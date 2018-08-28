@@ -57,6 +57,7 @@ ft::FaceWidget::FaceWidget(QWidget *pParent) : QGraphicsView(pParent)
 	// Add the image item
 	QPixmap oPixmap(":/images/noface");
 	m_pPixmapItem = m_pScene->addPixmap(oPixmap);
+	m_pPixmapItem->setTransformationMode(Qt::SmoothTransformation);
 	m_pPixmapItem->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 	m_pScene->setSceneRect(0, 0, oPixmap.width(), oPixmap.height());
 
@@ -82,6 +83,7 @@ ft::FaceWidget::~FaceWidget()
 void ft::FaceWidget::setPixmap(const QPixmap &oPixmap)
 {
 	m_pPixmapItem->setPixmap(oPixmap);
+	m_pPixmapItem->setTransformationMode(Qt::SmoothTransformation);
 	m_pScene->setSceneRect(0, 0, oPixmap.width(), oPixmap.height());
 }
 
@@ -97,7 +99,7 @@ void ft::FaceWidget::setScaleFactor(const double dScaleFactor)
 	if(dScaleFactor == m_dScaleFactor)
 		return;
 
-	if(dScaleFactor >= 0.10 && dScaleFactor <= 10.0)
+	if(dScaleFactor >= 0.01 && dScaleFactor <= 100.0)
 	{
 		// First, go back to the base scale (1.0 or 100%)
 		double dAdjust = 1.0 / m_dScaleFactor;
@@ -116,7 +118,7 @@ void ft::FaceWidget::setScaleFactor(const double dScaleFactor)
 void ft::FaceWidget::scaleViewBy(double dFactorBy)
 {
 	double dFactor = m_dScaleFactor * dFactorBy;
-	if(dFactor >= 0.10 && dFactor <= 10.0)
+	if(dFactor >= 0.01 && dFactor <= 100.0)
 	{
 		m_dScaleFactor = dFactor;
 	    scale(dFactorBy, dFactorBy);

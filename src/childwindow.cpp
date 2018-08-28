@@ -122,7 +122,7 @@ bool ft::ChildWindow::loadFromFile(const QString &sFileName, QString &sMsgError)
 // +-----------------------------------------------------------
 void ft::ChildWindow::setZoomLevel(const int iLevel)
 {
-	int iSteps = iLevel - 11; // Because 11 is the middle slider value, equivalent to the scale of 1.0 (100%)
+	int iSteps = iLevel - 21; // Because 21 is the middle slider value, equivalent to the scale of 1.0 (100%)
 	double dBase = iSteps < 0 ? FaceWidget::ZOOM_OUT_STEP : FaceWidget::ZOOM_IN_STEP;
 	
 	double dFactor = 1.0 * qPow(dBase, abs(iSteps));
@@ -137,9 +137,9 @@ int ft::ChildWindow::getZoomLevel() const
 
 	int iSteps = qCeil(qLn(abs(dFactor)) / qLn(dBase));
 	if(dFactor > 1.0)
-		return iSteps + 11;
+		return iSteps + 21;
 	else
-		return 11 - iSteps;
+		return 21 - iSteps;
 }
 
 // +-----------------------------------------------------------

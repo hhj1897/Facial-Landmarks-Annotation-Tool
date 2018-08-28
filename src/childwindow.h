@@ -85,14 +85,14 @@ namespace ft
 
 		/**
 		 * Sets the zoom level of the image in display in terms of the steps defined in the zoom
-		 * slider from 1 to 21, with 11 (the middle value) as "no zoom" (i.e. 100% view).
+		 * slider from 1 to 41, with 21 (the middle value) as "no zoom" (i.e. 100% view).
 		 * @param iLevel Integer with the zoom level to set.
 		 */
 		void setZoomLevel(const int iLevel);
 
 		/**
 		 * Gets the current zoom level of the image in display in terms of the steps defined in the zoom
-		 * slider from 1 to 21, with 11 (the middle value) as "no zoom" (i.e. 100% view).
+		 * slider from 1 to 41, with 21 (the middle value) as "no zoom" (i.e. 100% view).
 		 * @return Integer with the current zoom level.
 		 */
 		int getZoomLevel() const;
